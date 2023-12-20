@@ -1,0 +1,75 @@
+
+-- Selezionare cognome e nome tutti gli insegnanti, ordinati per cognome e poi per nome in ordine alfabetico (100)
+
+select surname, name
+from teachers t 
+order by surname, name asc;
+
+select name, surname
+from teachers t 
+order by name, surname asc;
+
+-- Selezionare tutti gli insegnamenti (courses) che valgono almeno 12 crediti (cfu) (375)
+
+select *
+from courses c 
+where c.cfu >= 12;
+
+-- Selezionare tutti gli studenti nati nel 1990 (160)
+
+
+select *
+from students s 
+where year(date_of_birth) = 1990; 
+
+-- Selezionare tutti i corsi del primo semestre del primoanno di un qualsiasi corso di laurea (286)
+
+select *
+from courses c
+where c.period = 'I semestre' and c.year = 1;
+
+-- Da quanti dipartimenti è composta l’università?
+
+select count(d.id) as numeroDipartimenti
+from departments d 
+
+-- Contare tutti gli insegnanti il cui cognome termina con la “E” (8)
+
+select count()
+from teachers t 
+where t.surname like '%e';
+
+-- Selezionare nome, cognome e codice fiscale di tutti gli studenti iscritti al Corso di Laurea in Economia, in ordine alfabetico
+
+SELECT name, surname, fiscal_code
+FROM students s
+WHERE s.degree_id = 53
+ORDER BY name  ASC;
+
+-- Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
+
+select
+from degrees d 
+join departments d2 
+on d.department_id = d2.id 
+where d.level = 'Magistrale' and d2.name = 'Dipartimento di Neuroscienze';
+
+
+
+-- Selezionare nome e cognome di tutti gli studenti che hanno superato l’esame del corso “maxime laboriosam nostrum” (39) 
+SELECT s.name, s.surname
+FROM courses c
+JOIN exams e ON c.id = e.course_id 
+JOIN exam_student es ON e.id = es.exam_id 
+JOIN students s ON es.student_id = s.id 
+WHERE c.name = 'maxime laboriosam nostrum' AND es.vote >= '18';
+
+-- Elencare tutti i docenti che insegnano nel Dipartimento di Matematica(54) 
+
+SELECT t.*
+FROM departments d 
+JOIN degrees d2 ON d.id = d2.department_id
+JOIN courses c ON d2.id = c.degree_id 
+JOIN course_teacher ct ON c.id = ct.course_id 
+JOIN teachers t ON ct.teacher_id  = t.id
+WHERE d.name = 'Dipartimento di Matematica';
